@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+$spacer: 1rem;
+$spacers: (
+    0: $spacer * 0.25,
+    1: $spacer * 0.5,
+    2: $spacer,
+    3: $spacer * 1.5,
+    4: $spacer * 5,
+);
+
+@each $name, $space in $spacers {
+    .mt-#{$name} {
+        margin-top: $space;
+    }
+
+    .mr-#{$name} {
+        margin-right: $space;
+    }
+
+    .mb-#{$name} {
+        margin-bottom: $space;
+    }
+
+    .ml-#{$name} {
+        margin-left: $space;
+    }
+}
