@@ -9,7 +9,7 @@ type Props = {
 const cx = cn.bind(styles)
 
 export default function BaseTaskInput(props: Props) {
-    const {titleMode, className} = props
+    const {titleMode, className, value, ...restProps} = props
 
     const classes = cx(
         {
@@ -19,5 +19,5 @@ export default function BaseTaskInput(props: Props) {
         className
     )
 
-    return <input {...props} className={classes} />
+    return <input className={classes} value={value} {...restProps} />
 }

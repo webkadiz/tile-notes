@@ -1,15 +1,32 @@
-import cn from 'classnames'
-import React from 'react'
-
+import React, {HTMLAttributes} from 'react'
+import cn from 'classnames/bind'
 import styles from './index.module.scss'
 
 type Props = {
+    flat?: boolean
     className?: string
     children?: React.ReactNode
-}
+} & HTMLAttributes<HTMLDivElement>
 
-export default function TaskCard(props: Props) {
-    return (
-        <div className={cn(styles.card, props.className)}>{props.children}</div>
+const cx = cn.bind(styles)
+
+export default React.forwardRef(function TaskCard(
+    props: Props,
+    ref: React.Ref<HTMLDivElement>
+) {
+    const {flat, className, ...restProps} = props
+
+    const classes = cx(
+        {
+            flat,
+        },
+        'card',
+        className
     )
-}
+
+    return (
+        <div className={classes} ref={ref} {...restProps}>
+            {props.children}
+        </div>
+    )
+})

@@ -1,0 +1,11 @@
+@import '../common.module.scss';
+
+.taskItemCard {
+    position: absolute;
+    width: $cardWidth;
+    transition: 0.3s;
+}
+
+.opened {
+    z-index: 100;
+}

@@ -10,8 +10,10 @@ export default function TaskCreationBlock() {
     const [isFold, setIsFold] = useState(true)
     const containerRef = useRef<HTMLDivElement>(null)
 
-    const foldCard = (e: MouseEvent) => {
-        if (!containerRef.current?.contains(e.target as Node)) setIsFold(true)
+    const foldCardAndCreate = (e: MouseEvent) => {
+        if (!containerRef.current?.contains(e.target as Node)) {
+            setIsFold(true)
+        }
     }
 
     const unfoldCard = () => {
@@ -19,9 +21,9 @@ export default function TaskCreationBlock() {
     }
 
     useEffect(() => {
-        window.addEventListener('click', foldCard)
+        window.addEventListener('click', foldCardAndCreate)
 
-        return () => window.removeEventListener('click', foldCard)
+        return () => window.removeEventListener('click', foldCardAndCreate)
     }, [])
 
     return (
@@ -31,7 +33,7 @@ export default function TaskCreationBlock() {
                 {!isFold && (
                     <>
                         <TaskTitleInput className="mb-2" autoFocus />
-                        <TaskContentInput />
+                        <TaskContentInput value="" />
                     </>
                 )}
             </TaskCard>
