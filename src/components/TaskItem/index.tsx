@@ -6,12 +6,14 @@ import TaskTextDisplay from '../TaskTextDisplay'
 import TaskTitleInput from '../TaskTitleInput/TaskTitleInput'
 import TaskContentInput from '../TaskContentInput'
 import TaskPopupBackground from '../TaskPopupBackground'
-import {updateTask, type Task} from '../../slices/task'
+import {updateTask, recalculateTasks, type Task} from '../../slices/task'
 import {CARD_WIDTH, CARD_MARGIN} from '../../constants'
 import styles from './index.module.scss'
 
 type Props = {
     task: Task
+    prevTask: Task
+    recalculate: number
     taskPerRow: number
     idx: number
 }
@@ -19,34 +21,38 @@ type Props = {
 const cx = cn.bind(styles)
 
 export default function TaskItem(props: Props) {
-    const {task, taskPerRow: perRow, idx} = props
+    const {task, prevTask, recalculate, taskPerRow: perRow, idx} = props
     const cardRef = useRef<HTMLDivElement>(null)
     const dispatch = useDispatch()
 
-    console.log(task.isOpen)
     useEffect(() => {
         console.log('use effect')
+        console.log(task.isOpen, task)
         if (task.isOpen === true) return
+        if (!cardRef.current) return
 
         let offsetTop = 0
         const offsetLeftIdx = idx % perRow
         const offsetLeft = (CARD_WIDTH + CARD_MARGIN) * offsetLeftIdx
 
+        console.log(prevTask)
         let elementAbove = cardRef.current
         for (let i = 0; i < perRow; i++) {
             elementAbove =
                 elementAbove &&
-                (elementAbove.previousElementSibling as HTMLDivElement | null)
+                (elementAbove.previousElementSibling as HTMLDivElement)
         }
 
         if (elementAbove) {
             offsetTop =
-                elementAbove.offsetTop + elementAbove.offsetHeight + CARD_MARGIN
+                prevTask.offsetTop + elementAbove.offsetHeight + CARD_MARGIN
         }
 
+        console.log(cardRef.current.offsetHeight)
         dispatch(
             updateTask({
                 ...task,
+                height: cardRef.current.offsetHeight,
                 offsetLeft,
                 offsetTop,
                 style: {
@@ -54,7 +60,7 @@ export default function TaskItem(props: Props) {
                 },
             })
         )
-    }, [task.isOpen])
+    }, [task.isOpen, recalculate, prevTask.offsetTop, prevTask.height, perRow])
 
     const openPopupCard = (e: React.MouseEvent) => {
         if (task.isOpen) return
@@ -78,11 +84,16 @@ export default function TaskItem(props: Props) {
     }
 
     const closePopupCard = () => {
+        dispatch(recalculateTasks())
+        cardRef.current?.addEventListener('transitionend', () => {
+            dispatch(recalculateTasks())
+            // dispatch(updateTask({...task, height: cardRef.current?.offsetHeight || 0,isOpen: false}))
+            console.log('end')
+        })
         dispatch(updateTask({...task, isOpen: false}))
     }
 
     const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log('change title')
         dispatch(updateTask({...task, title: e.target.value}))
     }
 
@@ -92,8 +103,9 @@ export default function TaskItem(props: Props) {
 
     return (
         <TaskCard
-            flat
             ref={cardRef}
+            elevation={task.isOpen ? 3 : 0}
+            hoverElevation={1}
             style={task.style}
             className={cx('taskItemCard', {opened: task.isOpen})}
             onClick={openPopupCard}

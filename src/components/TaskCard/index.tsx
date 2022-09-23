@@ -3,7 +3,8 @@ import cn from 'classnames/bind'
 import styles from './index.module.scss'
 
 type Props = {
-    flat?: boolean
+    elevation?: number
+    hoverElevation?: number
     className?: string
     children?: React.ReactNode
 } & HTMLAttributes<HTMLDivElement>
@@ -14,13 +15,17 @@ export default React.forwardRef(function TaskCard(
     props: Props,
     ref: React.Ref<HTMLDivElement>
 ) {
-    const {flat, className, ...restProps} = props
+    const {
+        elevation = 0,
+        hoverElevation = elevation,
+        className,
+        ...restProps
+    } = props
 
     const classes = cx(
-        {
-            flat,
-        },
         'card',
+        `elevation-${elevation}`,
+        `hoverElevation-${hoverElevation}`,
         className
     )
 

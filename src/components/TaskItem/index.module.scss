@@ -3,9 +3,10 @@
 .taskItemCard {
     position: absolute;
     width: $cardWidth;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
 .opened {
+    transition: all 0.3s, box-shadow 0.3s cubic-bezier(0.34, 0.43, 1, 0.29);
     z-index: 100;
 }

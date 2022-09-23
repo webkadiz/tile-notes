@@ -7,10 +7,36 @@
     padding: 12px 16px 12px 16px;
     background: white;
     outline: none;
-    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%),
-        0 2px 6px 2px rgb(60 64 67 / 15%);
 }
 
 .flat {
     box-shadow: none;
+}
+
+.elevation-0 {
+    box-shadow: none;
+}
+
+.elevation-1 {
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%),
+        0 2px 6px 2px rgb(60 64 67 / 15%);
+}
+
+.elevation-2 {
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%),
+        0 2px 6px 2px rgb(60 64 67 / 15%), 0 3px 5px rgb(0 0 0 / 20%);
+}
+
+.elevation-3 {
+    box-shadow: 0 0 12px rgb(60 64 67 / 60%);
+}
+
+.elevation-4 {
+    box-shadow: 0 6px 6px 6px rgb(60 64 67 / 80%);
+}
+
+@for $i from 0 to 5 {
+    .hoverElevation-#{$i}:hover {
+        @extend .elevation-#{$i};
+    }
 }
