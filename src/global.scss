@@ -1,3 +1,10 @@
+@import '../assets/fontawesome-6.2.0/scss/fontawesome';
+@import '../assets/fontawesome-6.2.0/scss/solid';
+
+.fa-xmark::before {
+    content: '#{$fa-var-xmark}';
+}
+
 * {
     box-sizing: border-box;
 }

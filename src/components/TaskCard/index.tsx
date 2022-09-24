@@ -5,6 +5,8 @@ import styles from './index.module.scss'
 type Props = {
     elevation?: number
     hoverElevation?: number
+    withClose?: boolean
+    onClose?: () => void
     className?: string
     children?: React.ReactNode
 } & HTMLAttributes<HTMLDivElement>
@@ -18,6 +20,8 @@ export default React.forwardRef(function TaskCard(
     const {
         elevation = 0,
         hoverElevation = elevation,
+        withClose = false,
+        onClose,
         className,
         ...restProps
     } = props
@@ -31,6 +35,7 @@ export default React.forwardRef(function TaskCard(
 
     return (
         <div className={classes} ref={ref} {...restProps}>
+            {withClose && <button className={cx('closeBtn')} onClick={onClose}><i className="fa-solid fa-xmark"></i></button>}
             {props.children}
         </div>
     )

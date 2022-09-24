@@ -7,3 +7,16 @@ export function truncate(text: string, maxLength: number) {
 
     return truncatedText
 }
+
+export function waitForElementTransition(
+    element: HTMLElement,
+    cb: (e: TransitionEvent) => void
+) {
+    const hd = (e: TransitionEvent) => {
+        cb(e)
+
+        element.removeEventListener('transitionend', hd)
+    }
+
+    element.addEventListener('transitionend', hd)
+}

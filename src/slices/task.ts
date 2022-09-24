@@ -125,6 +125,10 @@ export const taskSlice = createSlice({
                 state.tasks[taskIdx] = updatedTask
             }
         },
+        removeTask(state, {payload: taskId}: PayloadAction<number>) {
+            state.tasks = state.tasks.filter((task) => task.id !== taskId)
+            state.recalculate++
+        },
         recalculateTasks(state) {
             state.recalculate++
         },
@@ -137,7 +141,7 @@ export const taskSlice = createSlice({
     },
 })
 
-export const {createTask, updateTask, recalculateTasks} = taskSlice.actions
+export const {createTask, updateTask, removeTask, recalculateTasks} = taskSlice.actions
 console.log(taskSlice.actions)
 
 export const selectTasks = (state: RootState) => state.task.tasks

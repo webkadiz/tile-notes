@@ -6,9 +6,11 @@ import TaskTextDisplay from '../TaskTextDisplay'
 import TaskTitleInput from '../TaskTitleInput/TaskTitleInput'
 import TaskContentInput from '../TaskContentInput'
 import TaskPopupBackground from '../TaskPopupBackground'
-import {updateTask, recalculateTasks, type Task} from '../../slices/task'
+import {updateTask, removeTask, recalculateTasks, type Task} from '../../slices/task'
 import {CARD_WIDTH, CARD_MARGIN} from '../../constants'
+import {usePrevious} from '../../hooks'
 import styles from './index.module.scss'
+import { waitForElementTransition } from '../../utils'
 
 type Props = {
     task: Task
@@ -22,13 +24,14 @@ const cx = cn.bind(styles)
 
 export default function TaskItem(props: Props) {
     const {task, prevTask, recalculate, taskPerRow: perRow, idx} = props
+    const prevIsOpen = usePrevious(task.isOpen)
     const cardRef = useRef<HTMLDivElement>(null)
     const dispatch = useDispatch()
 
     useEffect(() => {
         console.log('use effect')
-        console.log(task.isOpen, task)
-        if (task.isOpen === true) return
+        console.log(task.isOpen, prevIsOpen, 'open', task.id)
+        if (task.isOpen || prevTask.isOpen) return
         if (!cardRef.current) return
 
         let offsetTop = 0
@@ -52,7 +55,7 @@ export default function TaskItem(props: Props) {
         dispatch(
             updateTask({
                 ...task,
-                height: cardRef.current.offsetHeight,
+                // height: cardRef.current.offsetHeight,
                 offsetLeft,
                 offsetTop,
                 style: {
@@ -84,11 +87,10 @@ export default function TaskItem(props: Props) {
     }
 
     const closePopupCard = () => {
-        dispatch(recalculateTasks())
-        cardRef.current?.addEventListener('transitionend', () => {
-            dispatch(recalculateTasks())
-            // dispatch(updateTask({...task, height: cardRef.current?.offsetHeight || 0,isOpen: false}))
+        waitForElementTransition(cardRef.current as HTMLElement, () => {
             console.log('end')
+            console.log(task)
+            dispatch(recalculateTasks())
         })
         dispatch(updateTask({...task, isOpen: false}))
     }
@@ -101,6 +103,10 @@ export default function TaskItem(props: Props) {
         dispatch(updateTask({...task, content: e.target.value}))
     }
 
+    const removeTaskHandler = () => {
+        dispatch(removeTask(task.id))
+    }
+
     return (
         <TaskCard
             ref={cardRef}
@@ -108,6 +114,8 @@ export default function TaskItem(props: Props) {
             hoverElevation={1}
             style={task.style}
             className={cx('taskItemCard', {opened: task.isOpen})}
+            withClose
+            onClose={removeTaskHandler}
             onClick={openPopupCard}
         >
             <TaskPopupBackground
