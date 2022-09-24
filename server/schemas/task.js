@@ -2,7 +2,7 @@ module.exports.taskSchema = {
     $id: 'task',
     type: 'object',
     properties: {
-        id: {type: 'string'},
+        id: {type: 'number'},
         title: {type: 'string'},
         content: {type: 'string'},
         createdAt: {type: 'string'},
@@ -36,8 +36,22 @@ module.exports.postTaskSchema = {
             content: {$ref: 'task#/properties/content'},
         },
         required: ['title', 'content'],
+        additionalProperties: false,
     },
-    $ref: 'baseResponse#',
+    response: {
+        200: {
+            type: 'object',
+            properties: {
+                error: {$ref: 'baseResponse#/response/200/properties/error'},
+                message: {
+                    $ref: 'baseResponse#/response/200/properties/message',
+                },
+                data: {
+                    $ref: 'task#',
+                },
+            },
+        },
+    },
 }
 
 module.exports.putTaskSchema = {
@@ -49,6 +63,7 @@ module.exports.putTaskSchema = {
             content: {$ref: 'task#/properties/content'},
         },
         required: ['id', 'title', 'content'],
+        additionalProperties: false,
     },
     $ref: 'baseResponse#',
 }
@@ -59,7 +74,8 @@ module.exports.deleteTaskSchema = {
         properties: {
             id: {$ref: 'task#/properties/id'},
         },
-        required: ['id', 'content'],
+        required: ['id'],
+        additionalProperties: false,
     },
     $ref: 'baseResponse#',
 }

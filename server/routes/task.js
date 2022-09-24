@@ -1,4 +1,4 @@
-const TaskService = require('../services/TaskService')
+const taskService = require('../services/TaskService')
 const {
     getTaskSchema,
     postTaskSchema,
@@ -7,25 +7,33 @@ const {
 } = require('../schemas/task')
 
 module.exports = function (fastify, opts, done) {
-    fastify.get('/task', {schema: getTaskSchema}, (request, reply) => {
-        const res = TaskService.create(taskParams)
-        reply.send()
+    fastify.get('/task', {schema: getTaskSchema}, async (request, reply) => {
+        const res = await taskService.get()
+
+        reply.baseResponse(res)
     })
 
-    fastify.post('/task', {schema: postTaskSchema}, (request, reply) => {
-        console.log(request.body)
+    fastify.post('/task', {schema: postTaskSchema}, async (request, reply) => {
+        const res = await taskService.create(request.body)
 
-        // const res = TaskService.create(taskParams)
-        reply.send()
+        reply.baseResponse(res)
     })
 
-    fastify.put('/task', {schema: putTaskSchema}, (request, reply) => {
-        reply.send()
+    fastify.put('/task', {schema: putTaskSchema}, async (request, reply) => {
+        const res = await taskService.update(request.body)
+
+        reply.baseResponse(res)
     })
 
-    fastify.delete('/task', {schema: deleteTaskSchema}, (request, reply) => {
-        reply.send()
-    })
+    fastify.delete(
+        '/task',
+        {schema: deleteTaskSchema},
+        async (request, reply) => {
+            const res = await taskService.delete(request.body.id)
+
+            reply.baseResponse(res)
+        }
+    )
 
     done()
 }
