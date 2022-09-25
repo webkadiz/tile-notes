@@ -42,6 +42,14 @@ export default function TaskItem(props: Props) {
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
+        if (idx !== 0) return
+
+        waitForElementTransition(cardRef.current, () => {
+            dispatch(recalculateTasksAction())
+        })
+    }, [])
+
+    useEffect(() => {
         if (task.isOpen || prevTask.isOpen) return
         if (!cardRef.current) return
 

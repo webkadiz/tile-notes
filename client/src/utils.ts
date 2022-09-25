@@ -9,9 +9,11 @@ export function truncate(text: string, maxLength: number) {
 }
 
 export function waitForElementTransition(
-    element: HTMLElement,
+    element: HTMLElement | null,
     cb: (e: TransitionEvent) => void
 ) {
+    if (!element) return
+
     const hd = (e: TransitionEvent) => {
         cb(e)
 
