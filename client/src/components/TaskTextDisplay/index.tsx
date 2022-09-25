@@ -1,8 +1,6 @@
-import {truncate} from '../../utils'
 import cn from 'classnames/bind'
+import {truncate} from '../../utils'
 import styles from './index.module.scss'
-
-console.log(styles)
 
 type Props = {
     text: string

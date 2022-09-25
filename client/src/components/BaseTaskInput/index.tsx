@@ -1,6 +1,5 @@
-import {forwardRef} from 'react'
+import {forwardRef, InputHTMLAttributes} from 'react'
 import cn from 'classnames/bind'
-import {InputHTMLAttributes} from 'react'
 import styles from './index.module.scss'
 
 type Props = {

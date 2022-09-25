@@ -1,6 +1,6 @@
 import {CSSProperties} from 'react'
 import {createSlice, type PayloadAction} from '@reduxjs/toolkit'
-import {findIndex, remove, matches} from 'lodash'
+import {findIndex} from 'lodash'
 import type {RootState} from '../../store'
 
 export type TaskId = string

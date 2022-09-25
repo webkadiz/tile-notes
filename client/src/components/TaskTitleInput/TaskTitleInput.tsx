@@ -1,5 +1,4 @@
-import {KeyboardEvent, useRef, useState} from 'react'
-import {InputHTMLAttributes} from 'react'
+import {KeyboardEvent, useRef, InputHTMLAttributes} from 'react'
 import BaseTaskInput from '../BaseTaskInput'
 
 export default function TaskTitleInput(props: InputHTMLAttributes<HTMLInputElement>) {

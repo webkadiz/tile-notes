@@ -7,7 +7,6 @@ import TaskCard from '../TaskCard'
 import TaskContentInput from '../TaskContentInput'
 import TaskTitleInput from '../TaskTitleInput/TaskTitleInput'
 import TaskToolbar from '../TaskToolbar'
-
 import styles from './index.module.scss'
 
 export default function TaskCreationBlock() {

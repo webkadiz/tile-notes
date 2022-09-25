@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useEffect, useRef} from 'react'
 import {useDispatch} from 'react-redux'
 import cn from 'classnames/bind'
 import TaskCard from '../TaskCard'
@@ -16,7 +16,7 @@ import {
 } from '../../slices/task'
 import {CARD_WIDTH, CARD_MARGIN} from '../../constants'
 import {waitForElementTransition} from '../../utils'
-import {AppDispatch} from '../../store'
+import {type AppDispatch} from '../../store'
 import styles from './index.module.scss'
 
 type Props = {

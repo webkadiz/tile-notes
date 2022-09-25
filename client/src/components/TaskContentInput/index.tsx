@@ -1,7 +1,6 @@
+import {TextareaHTMLAttributes, useEffect, useRef} from 'react'
 import ReactDOM from 'react-dom'
 import cn from 'classnames/bind'
-import {TextareaHTMLAttributes, useEffect, useRef} from 'react'
-import { P1 } from '../../constants'
 import styles from './index.module.scss'
 
 type Props = TextareaHTMLAttributes<HTMLTextAreaElement>
