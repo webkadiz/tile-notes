@@ -42,7 +42,6 @@ export default function TaskItem(props: Props) {
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
-        console.log('use effect')
         if (task.isOpen || prevTask.isOpen) return
         if (!cardRef.current) return
 
@@ -50,7 +49,6 @@ export default function TaskItem(props: Props) {
         const offsetLeftIdx = idx % perRow
         const offsetLeft = (CARD_WIDTH + CARD_MARGIN) * offsetLeftIdx
 
-        console.log(prevTask)
         let elementAbove = cardRef.current
         for (let i = 0; i < perRow; i++) {
             elementAbove =
@@ -63,7 +61,6 @@ export default function TaskItem(props: Props) {
                 prevTask.offsetTop + elementAbove.offsetHeight + CARD_MARGIN
         }
 
-        console.log(cardRef.current.offsetHeight)
         dispatch(
             updateTaskAction({
                 id,

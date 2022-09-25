@@ -20,7 +20,6 @@ export const createTaskWithDefaults = (task: TaskContents) => {
 }
 
 export const localStorageGetTaskAll = () => {
-    console.log(localStorage.getItem('tasks'))
     const tasksLocal = JSON.parse(localStorage.getItem('tasks') || '[]')
 
     return tasksLocal

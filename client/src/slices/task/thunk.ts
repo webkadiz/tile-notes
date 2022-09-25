@@ -65,8 +65,6 @@ export const syncTasks = createAsyncThunk(
                 dispatch(setTasksAction(tasksServer))
             }
         } catch (e) {
-            console.log('sync from localstorage')
-            console.log(tasksLocal)
             dispatch(setTasksAction(tasksLocal))
         }
     }
