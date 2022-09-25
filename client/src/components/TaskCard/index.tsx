@@ -41,7 +41,7 @@ export default React.forwardRef(function TaskCard(
     return (
         <div className={classes} ref={ref} {...restProps}>
             {!isOpen && withRemove && (
-                <button className={cx('removeBtn')} onClick={onRemove}>
+                <button className={cx('removeBtn')} onClick={onRemove} aria-label="Close Icon">
                     <i className="fa-solid fa-xmark"></i>
                 </button>
             )}
