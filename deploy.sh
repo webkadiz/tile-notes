@@ -7,6 +7,7 @@ test $? -ne 0 && exit
 cd tile-notes/client
 npm i
 PUBLIC_PATH=. npm run build
+rm -rf /tmp/tile-notes-build
 cp -r build /tmp/tile-notes-build
 
 cd  /tmp/tile-notes
