@@ -8,7 +8,7 @@ import TaskList from './components/TaskList'
 function App() {
     return (
         <Provider store={store}>
-            <div className="App">
+            <div className="app">
                 <TaskCreationBlock />
                 <TaskList />
             </div>

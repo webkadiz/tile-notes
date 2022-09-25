@@ -80,7 +80,8 @@ export default function TaskItem(props: Props) {
         if (task.isOpen) return
 
         const {left = 0} = cardRef.current?.getBoundingClientRect() || {}
-        const popupLeft = window.innerWidth / 2 - 300
+        const popupWidth = Math.min(window.innerWidth * 0.7, 600)
+        const popupLeft = window.innerWidth / 2 - popupWidth / 2
         const totalTransformLeft = popupLeft - left + task.offsetLeft
 
         dispatch(
@@ -90,7 +91,7 @@ export default function TaskItem(props: Props) {
                 style: {
                     ...task.style,
                     transform: `translateX(${totalTransformLeft}px)`,
-                    width: '600px',
+                    width: `${popupWidth}px`,
                 },
             })
         )

@@ -1,14 +1,16 @@
+@import '../common.module.scss';
+
 .container {
     position: relative;
     width: 752px;
     height: 500px;
     margin: 0 auto;
 
-    @media (max-width: 780px) {
+    @media (max-width: $two_card_per_row_breakpoint) {
         width: 496px;
     }
 
-    @media (max-width: 530px) {
+    @media (max-width: $one_card_per_row_breakpoint) {
         width: 240px;
     }
 }
