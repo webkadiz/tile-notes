@@ -1,5 +1,5 @@
 import {createAsyncThunk} from '@reduxjs/toolkit'
-import {differenceBy, intersectionBy, property, find} from 'lodash'
+import {find} from 'lodash'
 import * as api from '../../api'
 import type {RootState} from '../../store'
 import {
@@ -8,6 +8,9 @@ import {
     localStorageGetTaskAll,
     localStorageRemoveTask,
     localStorageUpdateTask,
+    syncCreatedTasks,
+    syncUpdatedTasks,
+    syncRemovedTasks,
 } from './utils'
 import {
     type TaskId,
@@ -32,33 +35,9 @@ export const syncTasks = createAsyncThunk(
             const tasksServer = response.data
 
             if (tasksLocal.length) {
-                const tasksForCreate = differenceBy(
-                    tasksLocal,
-                    tasksServer,
-                    property('id')
-                )
-                const tasksForDelete = differenceBy(
-                    tasksServer,
-                    tasksLocal,
-                    property('id')
-                )
-                const tasksForUpdate = intersectionBy(
-                    tasksLocal,
-                    tasksServer,
-                    property('id')
-                )
-
-                for (const task of tasksForCreate) {
-                    api.createTaskRequest(task)
-                }
-
-                for (const task of tasksForDelete) {
-                    api.removeTaskRequest(task.id)
-                }
-
-                for (const task of tasksForUpdate) {
-                    api.updateTaskRequest(task)
-                }
+                syncCreatedTasks(tasksLocal, tasksServer)
+                syncUpdatedTasks(tasksLocal, tasksServer)
+                syncRemovedTasks(tasksLocal, tasksServer)
 
                 dispatch(setTasksAction(tasksLocal))
             } else {

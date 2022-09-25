@@ -1,5 +1,6 @@
 import {v4 as uuidv4} from 'uuid'
-import {findIndex} from 'lodash'
+import {differenceBy, intersectionBy, property, findIndex} from 'lodash'
+import * as api from '../../api'
 import type {TaskId, Task, TaskContents} from './slice'
 
 export const createTaskWithDefaults = (task: TaskContents) => {
@@ -47,4 +48,28 @@ export const localStorageRemoveTask = (taskId: TaskId) => {
     const tasksLocalRest = tasksLocal.filter((task: Task) => task.id !== taskId)
 
     localStorage.setItem('tasks', JSON.stringify(tasksLocalRest))
+}
+
+export const syncCreatedTasks = (tasksLocal: Task[], tasksServer: Task[]) => {
+    const tasks = differenceBy(tasksLocal, tasksServer, property('id'))
+
+    for (const task of tasks) {
+        api.createTaskRequest(task)
+    }
+}
+
+export const syncUpdatedTasks = (tasksLocal: Task[], tasksServer: Task[]) => {
+    const tasks = intersectionBy(tasksLocal, tasksServer, property('id'))
+
+    for (const task of tasks) {
+        api.createTaskRequest(task)
+    }
+}
+
+export const syncRemovedTasks = (tasksLocal: Task[], tasksServer: Task[]) => {
+    const tasks = differenceBy(tasksServer, tasksLocal, property('id'))
+
+    for (const task of tasks) {
+        api.createTaskRequest(task)
+    }
 }
