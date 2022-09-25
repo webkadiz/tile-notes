@@ -13,8 +13,12 @@ export default function TaskToolbar(props: Props) {
         <div className={cx('toolbar')}>
             <div></div>
             <div>
-                <button className="btn mr-1" onClick={props.onCreate}>Создать</button>
-                <button className="btn" onClick={props.onClose}>Закрыть</button>
+                <button className="btn mr-1" onClick={props.onCreate}>
+                    Создать
+                </button>
+                <button className="btn" onClick={props.onClose}>
+                    Закрыть
+                </button>
             </div>
         </div>
     )

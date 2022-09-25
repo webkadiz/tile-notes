@@ -135,10 +135,7 @@ export default function TaskItem(props: Props) {
             />
             {task.isOpen ? (
                 <>
-                    <TaskTitleInput
-                        value={task.title}
-                        onChange={changeTitle}
-                    />
+                    <TaskTitleInput value={task.title} onChange={changeTitle} />
                     <TaskContentInput
                         autoFocus
                         value={task.content}

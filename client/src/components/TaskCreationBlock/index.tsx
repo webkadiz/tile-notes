@@ -78,10 +78,7 @@ export default function TaskCreationBlock() {
                 )}
                 {!isFold && (
                     <>
-                        <TaskTitleInput
-                            value={title}
-                            onChange={changeTitle}
-                        />
+                        <TaskTitleInput value={title} onChange={changeTitle} />
                         <TaskContentInput
                             autoFocus
                             placeholder="Заметка..."
