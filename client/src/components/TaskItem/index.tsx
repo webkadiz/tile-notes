@@ -138,7 +138,6 @@ export default function TaskItem(props: Props) {
                     <TaskTitleInput
                         value={task.title}
                         onChange={changeTitle}
-                        className="mb-2"
                     />
                     <TaskContentInput
                         autoFocus

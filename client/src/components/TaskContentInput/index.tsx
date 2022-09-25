@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom'
 import cn from 'classnames/bind'
 import {TextareaHTMLAttributes, useEffect, useRef} from 'react'
+import { P1 } from '../../constants'
 import styles from './index.module.scss'
 
 type Props = TextareaHTMLAttributes<HTMLTextAreaElement>
@@ -15,7 +16,7 @@ export default function TaskContentInput(props: Props) {
         if (textareaSampleRef.current && textareaRef.current) {
             const height = textareaSampleRef.current.scrollHeight
 
-            textareaRef.current.style.height = `${height + 5}px`
+            textareaRef.current.style.height = `${height + 3}px`
         }
     }, [props.value])
 

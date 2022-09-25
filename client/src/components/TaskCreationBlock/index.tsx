@@ -80,7 +80,6 @@ export default function TaskCreationBlock() {
                 {!isFold && (
                     <>
                         <TaskTitleInput
-                            className="mb-2"
                             value={title}
                             onChange={changeTitle}
                         />

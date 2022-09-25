@@ -2,11 +2,13 @@
 
 .taskItemCard {
     position: absolute;
+    padding: $defaultPadding;
     width: $cardWidth;
     transition: 0.2s;
 }
 
 .opened {
+    padding: 0;
     position: fixed;
     top: 15vh;
     transition: all 0.3s, box-shadow 0.3s cubic-bezier(0.34, 0.43, 1, 0.29);
