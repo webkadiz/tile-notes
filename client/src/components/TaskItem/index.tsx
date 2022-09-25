@@ -5,7 +5,7 @@ import TaskCard from '../TaskCard'
 import TaskTextDisplay from '../TaskTextDisplay'
 import TaskTitleInput from '../TaskTitleInput/TaskTitleInput'
 import TaskContentInput from '../TaskContentInput'
-import TaskPopupBackground from '../TaskPopupBackground'
+import TaskModalBackground from '../TaskModalBackground'
 import {
     type Task,
     updateTaskAction,
@@ -50,8 +50,14 @@ export default function TaskItem(props: Props) {
     }, [])
 
     useEffect(() => {
-        if (task.isOpen || prevTask.isOpen) return
+        if (!task.isOpen) return
+
+        modalCardPositionUpdate()
+    }, [perRow])
+
+    useEffect(() => {
         if (!cardRef.current) return
+        if (prevTask.isOpen || task.isOpen) return
 
         let offsetTop = 0
         const offsetLeftIdx = idx % perRow
@@ -81,28 +87,33 @@ export default function TaskItem(props: Props) {
         )
     }, [task.isOpen, recalculate, prevTask.offsetTop, perRow])
 
-    const openPopupCard = (e: React.MouseEvent) => {
-        if (task.isOpen) return
-
+    const modalCardPositionUpdate = () => {
         const {left = 0} = cardRef.current?.getBoundingClientRect() || {}
-        const popupWidth = Math.min(window.innerWidth * 0.7, 600)
-        const popupLeft = window.innerWidth / 2 - popupWidth / 2
-        const totalTransformLeft = popupLeft - left + task.offsetLeft
+        const modalWidth = Math.min(window.innerWidth * 0.7, 600)
+        const modalLeft = window.innerWidth / 2 - modalWidth / 2
+        const totalTransformLeft = modalLeft - left + task.offsetLeft
 
         dispatch(
             updateTaskAction({
                 id,
                 isOpen: true,
+                offsetLeft: totalTransformLeft,
                 style: {
                     ...task.style,
                     transform: `translateX(${totalTransformLeft}px)`,
-                    width: `${popupWidth}px`,
+                    width: `${modalWidth}px`,
                 },
             })
         )
     }
 
-    const closePopupCard = () => {
+    const openModalCard = (e: React.MouseEvent) => {
+        if (task.isOpen) return
+
+        modalCardPositionUpdate()
+    }
+
+    const closeModalCard = () => {
         waitForElementTransition(cardRef.current as HTMLElement, () => {
             dispatch(recalculateTasksAction())
         })
@@ -132,11 +143,11 @@ export default function TaskItem(props: Props) {
             withRemove
             isOpen={task.isOpen}
             onRemove={removeTaskHandler}
-            onClick={openPopupCard}
+            onClick={openModalCard}
         >
-            <TaskPopupBackground
+            <TaskModalBackground
                 isOpen={task.isOpen}
-                closePopup={closePopupCard}
+                closeModal={closeModalCard}
             />
             {task.isOpen ? (
                 <>

@@ -4,18 +4,18 @@ import styles from './index.module.scss'
 
 type Props = {
     isOpen: boolean
-    closePopup: () => void
+    closeModal: () => void
 }
 
 const cx = cn.bind(styles)
 
-export default function TaskPopupBackground(props: Props) {
-    const {isOpen, closePopup} = props
+export default function TaskModalBackground(props: Props) {
+    const {isOpen, closeModal} = props
 
     return ReactDOM.createPortal(
         <div
             className={cx('overlay', {opened: isOpen})}
-            onClick={closePopup}
+            onClick={closeModal}
         ></div>,
         document.querySelector('#task-popup') as Element
     )
