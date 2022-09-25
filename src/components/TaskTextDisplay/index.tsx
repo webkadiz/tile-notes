@@ -14,12 +14,12 @@ const cx = cn.bind(styles)
 
 export default function TaskTitleDisplay(props: Props) {
     const {text, titleMode, contentMode} = props
-    let truncatedText
+    let truncatedText = ''
 
     if (titleMode) {
         truncatedText = truncate(text, 50)
     } else if (contentMode) {
-        truncatedText = truncate(text, 200)
+        truncatedText = truncate(text, 400)
     }
 
     const classes = cx({
@@ -27,5 +27,12 @@ export default function TaskTitleDisplay(props: Props) {
         titleText: titleMode,
     })
 
-    return <div className={classes}>{truncatedText}</div>
+    return titleMode ? (
+        <div className={classes}>{truncatedText}</div>
+    ) : (
+        <div
+            className={classes}
+            dangerouslySetInnerHTML={{__html: contentMode ? truncatedText : ''}}
+        ></div>
+    )
 }

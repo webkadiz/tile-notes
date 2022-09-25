@@ -7,6 +7,10 @@ const {
 } = require('../schemas/task')
 
 module.exports = function (fastify, opts, done) {
+    fastify.options('/task', (request, reply) => {
+        reply.baseResponse()
+    })
+
     fastify.get('/task', {schema: getTaskSchema}, async (request, reply) => {
         const res = await taskService.get()
 

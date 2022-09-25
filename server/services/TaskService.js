@@ -17,10 +17,10 @@ class TaskService {
         }
     }
 
-    async update({id, title, content}) {
+    async update({id, title, content, updatedAt}) {
         try {
             const res = await db.task.update(
-                {title, content},
+                {title, content, updatedAt},
                 {
                     where: {id},
                 }

@@ -1,6 +1,36 @@
 @import '../assets/fontawesome-6.2.0/scss/fontawesome';
 @import '../assets/fontawesome-6.2.0/scss/solid';
 
+@font-face {
+    font-family: 'Roboto';
+    src: local('Roboto Light'), local('Roboto-Light'),
+        url('../assets/Roboto/Robotolight.woff2') format('woff2'),
+        url('../assets/Roboto/Robotolight.woff') format('woff'),
+        url('../assets/Roboto/Robotolight.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: local('Roboto Regular'), local('Roboto-Regular'),
+        url('../assets/Roboto/Roboto.woff2') format('woff2'),
+        url('../assets/Roboto/Roboto.woff') format('woff'),
+        url('../assets/Roboto/Roboto.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: local('Roboto Medium'), local('Roboto-Medium'),
+        url('../assets/Roboto/Robotomedium.woff2') format('woff2'),
+        url('../assets/Roboto/Robotomedium.woff') format('woff'),
+        url('../assets/Roboto/Robotomedium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
 .fa-xmark::before {
     content: '#{$fa-var-xmark}';
 }
@@ -9,12 +39,19 @@
     box-sizing: border-box;
 }
 
-html {
-    font-size: 16px;
+input::placeholder,
+textarea::placeholder {
+    font-weight: 500;
 }
 
-.w-100 {
-    width: 100%;
+html {
+    font-size: 16px;
+    font-family: Roboto, Arial;
+}
+
+input,
+textarea {
+    font-family: Roboto, Arial;
 }
 
 $spacer: 1rem;
@@ -41,5 +78,32 @@ $spacers: (
 
     .ml-#{$name} {
         margin-left: $space;
+    }
+}
+
+.btn {
+    color: rgba(0, 0, 0, 0.87);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    letter-spacing: 0.01785714em;
+    font-family: Roboto, Arial;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    height: 36px;
+    padding: 8px 20px;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: .1s;
+    background: transparent;
+
+    &:hover {
+        background-color: rgba(95, 99, 104, 0.1);
+    }
+
+    &:active {
+        background-color: rgba(95, 99, 104, 0.2);
     }
 }

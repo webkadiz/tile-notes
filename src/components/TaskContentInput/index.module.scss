@@ -1,4 +1,17 @@
-.text {
-    // overflow: hidden;
+:global(.textareaContent) {
+    width: 100%;
+    border: none;
+    outline: none;
     resize: none;
+    max-height: 70vh;
+    line-height: 1.5rem;
+    font-size: 1rem;
+}
+
+.textareaSample {
+    position: absolute;
+    width: 566px;
+    left: -100%;
+    font-size: 1rem;
+    line-height: 1.5rem;
 }

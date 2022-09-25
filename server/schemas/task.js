@@ -2,7 +2,7 @@ module.exports.taskSchema = {
     $id: 'task',
     type: 'object',
     properties: {
-        id: {type: 'number'},
+        id: {type: 'string'},
         title: {type: 'string'},
         content: {type: 'string'},
         createdAt: {type: 'string'},
@@ -34,8 +34,10 @@ module.exports.postTaskSchema = {
         properties: {
             title: {$ref: 'task#/properties/title'},
             content: {$ref: 'task#/properties/content'},
+            createdAt: {$ref: 'task#/properties/createdAt'},
+            updatedAt: {$ref: 'task#/properties/updatedAt'},
         },
-        required: ['title', 'content'],
+        required: ['title', 'content', 'createdAt', 'updatedAt'],
         additionalProperties: false,
     },
     response: {
@@ -61,8 +63,9 @@ module.exports.putTaskSchema = {
             id: {$ref: 'task#/properties/id'},
             title: {$ref: 'task#/properties/title'},
             content: {$ref: 'task#/properties/content'},
+            updatedAt: {$ref: 'task#/properties/updatedAt'},
         },
-        required: ['id', 'title', 'content'],
+        required: ['id', 'title', 'content', 'updatedAt'],
         additionalProperties: false,
     },
     $ref: 'baseResponse#',

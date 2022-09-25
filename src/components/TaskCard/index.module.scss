@@ -1,14 +1,14 @@
 @import '../common.module.scss';
 
 .card {
-    min-height: 46px;
+    position: relative;
     border-radius: 8px;
     border: 1px solid #e0e0e0;
     padding: 12px 16px 12px 16px;
     background: white;
     outline: none;
 
-    &:hover .closeBtn {
+    &:hover .removeBtn {
         opacity: 1;
     }
 }
@@ -45,7 +45,7 @@
     }
 }
 
-.closeBtn {
+.removeBtn {
     position: absolute;
     width: 20px;
     height: 20px;
@@ -66,4 +66,8 @@
     &:hover {
         color: #bbb;
     }
+}
+
+.withToolbar {
+    padding-bottom: 50px;
 }

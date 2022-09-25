@@ -1,3 +1,4 @@
+import {forwardRef} from 'react'
 import cn from 'classnames/bind'
 import {InputHTMLAttributes} from 'react'
 import styles from './index.module.scss'
@@ -8,16 +9,19 @@ type Props = {
 
 const cx = cn.bind(styles)
 
-export default function BaseTaskInput(props: Props) {
+export default forwardRef<HTMLInputElement, Props>(function BaseTaskInput(
+    props: Props,
+    ref
+) {
     const {titleMode, className, value, ...restProps} = props
 
     const classes = cx(
         {
             titleMode,
         },
-        'w-100',
+        'baseInput',
         className
     )
 
-    return <input className={classes} value={value} {...restProps} />
-}
+    return <input className={classes} value={value} ref={ref} {...restProps} />
+})

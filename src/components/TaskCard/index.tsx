@@ -5,8 +5,10 @@ import styles from './index.module.scss'
 type Props = {
     elevation?: number
     hoverElevation?: number
-    withClose?: boolean
-    onClose?: () => void
+    isOpen?: boolean
+    withToolbar?: boolean
+    withRemove?: boolean
+    onRemove?: () => void
     className?: string
     children?: React.ReactNode
 } & HTMLAttributes<HTMLDivElement>
@@ -20,13 +22,16 @@ export default React.forwardRef(function TaskCard(
     const {
         elevation = 0,
         hoverElevation = elevation,
-        withClose = false,
-        onClose,
+        isOpen,
+        withToolbar = false,
+        withRemove = false,
+        onRemove,
         className,
         ...restProps
     } = props
 
     const classes = cx(
+        withToolbar && 'withToolbar',
         'card',
         `elevation-${elevation}`,
         `hoverElevation-${hoverElevation}`,
@@ -35,7 +40,11 @@ export default React.forwardRef(function TaskCard(
 
     return (
         <div className={classes} ref={ref} {...restProps}>
-            {withClose && <button className={cx('closeBtn')} onClick={onClose}><i className="fa-solid fa-xmark"></i></button>}
+            {!isOpen && withRemove && (
+                <button className={cx('removeBtn')} onClick={onRemove}>
+                    <i className="fa-solid fa-xmark"></i>
+                </button>
+            )}
             {props.children}
         </div>
     )

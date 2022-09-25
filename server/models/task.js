@@ -11,10 +11,13 @@ module.exports = (sequelize, DataTypes) => {
         {
             title: DataTypes.STRING,
             content: DataTypes.STRING,
+            createdAt: DataTypes.DATE,
+            updatedAt: DataTypes.DATE,
         },
         {
             sequelize,
             modelName: 'task',
+            timestamps: false,
         }
     )
 
