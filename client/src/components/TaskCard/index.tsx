@@ -43,7 +43,7 @@ export default React.forwardRef(function TaskCard(
     )
 
     const onClickHandler = (e: React.MouseEvent) => {
-        if (ref && 'current' in ref && ref.current?.contains(removeBtnRef.current)) return
+        if ((e.target as Element).closest('button') === removeBtnRef.current) return
 
         onClick(e)
     }
