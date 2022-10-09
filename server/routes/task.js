@@ -11,28 +11,46 @@ module.exports = function (fastify, opts, done) {
         reply.baseResponse()
     })
 
-    fastify.get('/task', {schema: getTaskSchema}, async (request, reply) => {
-        const res = await taskService.get()
+    fastify.get(
+        '/task',
+        {schema: getTaskSchema, onRequest: fastify.authenticate},
+        async (request, reply) => {
+            const res = await taskService.get()
 
-        reply.baseResponse(res)
-    })
+            reply.baseResponse(res)
+        }
+    )
 
-    fastify.post('/task', {schema: postTaskSchema}, async (request, reply) => {
-        const res = await taskService.create(request.body)
+    fastify.post(
+        '/task',
+        {schema: postTaskSchema, onRequest: fastify.authenticate},
+        async (request, reply) => {
+            fastify.authenticate()
 
-        reply.baseResponse(res)
-    })
+            const res = await taskService.create(request.body)
 
-    fastify.put('/task', {schema: putTaskSchema}, async (request, reply) => {
-        const res = await taskService.update(request.body)
+            reply.baseResponse(res)
+        }
+    )
 
-        reply.baseResponse(res)
-    })
+    fastify.put(
+        '/task',
+        {schema: putTaskSchema, onRequest: fastify.authenticate},
+        async (request, reply) => {
+            fastify.authenticate()
+
+            const res = await taskService.update(request.body)
+
+            reply.baseResponse(res)
+        }
+    )
 
     fastify.delete(
         '/task',
-        {schema: deleteTaskSchema},
+        {schema: deleteTaskSchema, onRequest: fastify.authenticate},
         async (request, reply) => {
+            fastify.authenticate()
+
             const res = await taskService.delete(request.body.id)
 
             reply.baseResponse(res)

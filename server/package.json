@@ -10,7 +10,9 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@fastify/jwt": "^6.3.2",
         "@fastify/swagger": "^7.6.0",
+        "dotenv": "^16.0.2",
         "fastify": "^4.6.0",
         "pg": "^8.8.0",
         "sequelize": "^6.23.1",

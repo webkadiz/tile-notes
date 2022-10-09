@@ -117,6 +117,29 @@ $spacers: (
     }
 }
 
+.btn-link {
+    color: rgba(0, 0, 0, 0.87);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    letter-spacing: 0.01785714em;
+    font-family: Roboto, Arial;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    height: 36px;
+    padding: 8px 20px;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.1s;
+    background: transparent;
+
+    &:hover {
+        color: black
+    }
+}
+
 textarea::-webkit-scrollbar {
     width: 12px;
 }
@@ -134,4 +157,45 @@ textarea::-webkit-scrollbar-thumb:hover {
 
 textarea::-webkit-scrollbar-button {
     display: none;
+}
+
+.elevation-0 {
+    box-shadow: none;
+}
+
+.elevation-1 {
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%),
+        0 2px 6px 2px rgb(60 64 67 / 15%);
+}
+
+.elevation-2 {
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%),
+        0 2px 6px 2px rgb(60 64 67 / 15%), 0 3px 5px rgb(0 0 0 / 20%);
+}
+
+.elevation-3 {
+    box-shadow: 0 0 12px rgb(60 64 67 / 60%);
+}
+
+.elevation-4 {
+    box-shadow: 0 6px 6px 6px rgb(60 64 67 / 80%);
+}
+
+@for $i from 0 to 5 {
+    .hoverElevation-#{$i}:hover {
+        @extend .elevation-#{$i};
+    }
+}
+
+.card {
+    position: relative;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    background: white;
+    outline: none;
+}
+
+.error {
+    color: red;
+    margin-bottom: 20px;
 }

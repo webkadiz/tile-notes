@@ -2,7 +2,7 @@ module.exports = function (fastify, opts, done) {
     fastify.decorateReply('baseResponse', function (payload) {
         this.headers({
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
             'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
         })
 
