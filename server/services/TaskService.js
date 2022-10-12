@@ -25,7 +25,6 @@ class TaskService {
         const task = taskArr[0]
 
         await task.update(
-
             {title, content, updatedAt},
         )
     }
