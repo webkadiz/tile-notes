@@ -1,5 +1,6 @@
 module.exports = function (fastify, opts, done) {
     fastify.decorateReply('baseResponse', function (payload) {
+        console.log(payload)
         this.headers({
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization',

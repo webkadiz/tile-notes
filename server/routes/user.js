@@ -17,9 +17,7 @@ module.exports = function (fastify, opts, done) {
     fastify.post('/signup', {schema: signupSchema}, async (request, reply) => {
         const user = await UserService.signup(request.body)
 
-        if (user instanceof Error) return reply.baseResponse(user)
-
-        const token = fastify.jwt.sign({login: user.login})
+        const token = fastify.jwt.sign({id: user.id, login: user.login})
 
         reply.baseResponse({token})
     })
@@ -27,11 +25,7 @@ module.exports = function (fastify, opts, done) {
     fastify.post('/signin', {schema: signupSchema}, async (request, reply) => {
         const user = await UserService.signin(request.body)
 
-        if (user instanceof Error) return reply.baseResponse(user)
-
-        console.log(user)
-
-        const token = fastify.jwt.sign({login: user.login})
+        const token = fastify.jwt.sign({id: user.id, login: user.login})
 
         reply.baseResponse({token})
     })

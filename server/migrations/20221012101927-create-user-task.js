@@ -1,15 +1,16 @@
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('users', {
-            id: {
+        await queryInterface.createTable('UserTasks', {
+            userId: {
                 type: Sequelize.UUID,
-                defaultValue: Sequelize.UUIDV4,
                 primaryKey: true,
             },
-            login: {
-                type: Sequelize.STRING,
+            taskId: {
+                type: Sequelize.UUID,
+                primaryKey: true,
             },
-            password: {
+            scope: {
+                allowNull: false,
                 type: Sequelize.STRING,
             },
             createdAt: {
@@ -24,6 +25,6 @@ module.exports = {
     },
 
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('users')
+        await queryInterface.dropTable('UserTasks')
     },
 }

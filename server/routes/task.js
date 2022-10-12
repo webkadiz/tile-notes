@@ -15,7 +15,7 @@ module.exports = function (fastify, opts, done) {
         '/task',
         {schema: getTaskSchema, onRequest: fastify.authenticate},
         async (request, reply) => {
-            const res = await taskService.get()
+            const res = await taskService.get(request.user.id)
 
             reply.baseResponse(res)
         }
@@ -25,9 +25,7 @@ module.exports = function (fastify, opts, done) {
         '/task',
         {schema: postTaskSchema, onRequest: fastify.authenticate},
         async (request, reply) => {
-            fastify.authenticate()
-
-            const res = await taskService.create(request.body)
+            const res = await taskService.create(request.user.id, request.body)
 
             reply.baseResponse(res)
         }
@@ -37,9 +35,7 @@ module.exports = function (fastify, opts, done) {
         '/task',
         {schema: putTaskSchema, onRequest: fastify.authenticate},
         async (request, reply) => {
-            fastify.authenticate()
-
-            const res = await taskService.update(request.body)
+            const res = await taskService.update(request.user.id, request.body)
 
             reply.baseResponse(res)
         }
@@ -49,8 +45,6 @@ module.exports = function (fastify, opts, done) {
         '/task',
         {schema: deleteTaskSchema, onRequest: fastify.authenticate},
         async (request, reply) => {
-            fastify.authenticate()
-
             const res = await taskService.delete(request.body.id)
 
             reply.baseResponse(res)

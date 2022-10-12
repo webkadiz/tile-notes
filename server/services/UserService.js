@@ -1,36 +1,35 @@
 const db = require('../models')
 
 class UserService {
+    async get(userId) {
+        return db.user.findByPk(userId)
+    }
+
     async signup(params) {
-        try {
-            const existingUser = await db.user.findAll({
-                where: {
-                    login: params.login,
-                },
-            })
+        const existingUser = await db.user.findAll({
+            where: {
+                login: params.login,
+            },
+        })
 
-            if (existingUser.length) throw new Error('Пользователь существует')
+        if (existingUser.length) throw new Error('Пользователь существует')
 
-            return (await db.user.create(params)).dataValues
-        } catch (e) {
-            return e
-        }
+        return (await db.user.create(params)).dataValues
     }
 
     async signin(params) {
-        try {
-            const existingUser = await db.user.findAll({
-                where: {
-                    login: params.login,
-                },
-            })
+        const existingUser = await db.user.findAll({
+            where: {
+                login: params.login,
+            },
+        })
 
-            if (!existingUser.length) throw new Error('Пользователя не существует')
+        if (!existingUser.length) throw new Error('Пользователя не существует')
 
-            return existingUser[0]
-        } catch (e) {
-            return e
-        }
+        if (params.password !== existingUser[0].password)
+            throw new Error('Логин или пароль неверны')
+
+        return existingUser[0]
     }
 }
 
