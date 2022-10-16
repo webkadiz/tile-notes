@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useDispatch} from 'react-redux'
 import cn from 'classnames/bind'
 import TaskCard from '../TaskCard'
@@ -6,6 +6,7 @@ import TaskTextDisplay from '../TaskTextDisplay'
 import TaskTitleInput from '../TaskTitleInput/TaskTitleInput'
 import TaskContentInput from '../TaskContentInput'
 import TaskModalBackground from '../TaskModalBackground'
+import TaskToolbar from '../TaskToolbar'
 import {
     type Task,
     updateTaskAction,
@@ -40,6 +41,7 @@ export default function TaskItem(props: Props) {
     } = props
     const cardRef = useRef<HTMLDivElement>(null)
     const dispatch = useDispatch<AppDispatch>()
+    const [showToolbar, setShowToolbar] = useState(false)
 
     useEffect(() => {
         if (idx !== 0) return
@@ -119,6 +121,7 @@ export default function TaskItem(props: Props) {
         })
         dispatch(updateTaskAction({id, isOpen: false}))
         dispatch(updateTaskWithStoring(id))
+        setShowToolbar(false)
     }
 
     const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,6 +136,15 @@ export default function TaskItem(props: Props) {
         dispatch(removeTaskWithStoring(id))
     }
 
+    const cardMouseEnter = () => {
+        console.log('enter')
+        setShowToolbar(true)
+    }
+
+    const cardMouseLeave = () => {
+        setShowToolbar(false)
+    }
+
     return (
         <TaskCard
             ref={cardRef}
@@ -144,6 +156,9 @@ export default function TaskItem(props: Props) {
             isOpen={task.isOpen}
             onRemove={removeTaskHandler}
             onClick={openModalCard}
+            onMouseEnter={cardMouseEnter}
+            onMouseLeave={cardMouseLeave}
+            withToolbar
         >
             <TaskModalBackground
                 isOpen={task.isOpen}
@@ -157,11 +172,13 @@ export default function TaskItem(props: Props) {
                         value={task.content}
                         onChange={changeContent}
                     />
+                    <TaskToolbar onClose={closeModalCard} />
                 </>
             ) : (
                 <>
                     <TaskTextDisplay text={task.title} titleMode />
                     <TaskTextDisplay text={task.content} contentMode />
+                    {showToolbar && <TaskToolbar />}
                 </>
             )}
         </TaskCard>

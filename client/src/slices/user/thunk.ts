@@ -1,20 +1,22 @@
 import {createAsyncThunk} from '@reduxjs/toolkit'
 import * as api from '../../api'
-import {UserCreds} from './slice'
+import {setToken, setUserInfo, UserCreds} from './slice'
 import {AxiosError} from 'axios'
 
 export const userSignup = createAsyncThunk(
     'user/signup',
-    async (userCreds: UserCreds) => {
+    async (userCreds: UserCreds, {dispatch}) => {
         try {
             const res = await api.signup(userCreds)
-            console.log(res)
 
             if (res.data.error) throw new Error(res.data.message)
 
-            localStorage.setItem('token', res.data.data.token)
+            const userState = res.data.data
 
-            return res.data.data
+            localStorage.setItem('token', res.data.data.token)
+            localStorage.setItem('userInfo', JSON.stringify(userState.userInfo))
+            dispatch(setToken(userState.token))
+            dispatch(setUserInfo(userState.userInfo))
         } catch (e) {
             if (e instanceof AxiosError) throw new Error('Ошибка сети')
 
@@ -25,16 +27,18 @@ export const userSignup = createAsyncThunk(
 
 export const userSignin = createAsyncThunk(
     'user/signup',
-    async (userCreds: UserCreds) => {
+    async (userCreds: UserCreds, {dispatch}) => {
         try {
             const res = await api.signin(userCreds)
-            console.log(res)
 
             if (res.data.error) throw new Error(res.data.message)
 
-            localStorage.setItem('token', res.data.data.token)
+            const userState = res.data.data
 
-            return res.data.data
+            localStorage.setItem('token', userState.token)
+            localStorage.setItem('userInfo', JSON.stringify(userState.userInfo))
+            dispatch(setToken(userState.token))
+            dispatch(setUserInfo(userState.userInfo))
         } catch (e) {
             if (e instanceof AxiosError) throw new Error('Ошибка сети')
 
@@ -42,3 +46,19 @@ export const userSignin = createAsyncThunk(
         }
     }
 )
+
+// export const getUserInfo = createAsyncThunk('user/getInfo', async () => {
+//     try {
+//         const res = await api.getUserInfo()
+
+//         if (res.data.error) throw new Error(res.data.message)
+
+//         const userInfo = res.data.data
+
+//         setLogin(userInfo.login)
+//     } catch (e) {
+//         if (e instanceof AxiosError) throw new Error('Ошибка сети')
+
+//         throw e
+//     }
+// })

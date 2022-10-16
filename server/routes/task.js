@@ -45,7 +45,7 @@ module.exports = function (fastify, opts, done) {
         '/task',
         {schema: deleteTaskSchema, onRequest: fastify.authenticate},
         async (request, reply) => {
-            const res = await taskService.delete(request.body.id)
+            const res = await taskService.delete(request.user.id, request.body.id)
 
             reply.baseResponse(res)
         }

@@ -31,6 +31,12 @@ module.exports.signupSchema = {
                     type: 'object',
                     properties: {
                         token: {type: 'string'},
+                        userInfo: {
+                            type: 'object',
+                            properties: {
+                                login: {type: 'string'},
+                            },
+                        },
                     },
                 },
             },
@@ -60,6 +66,12 @@ module.exports.signinSchema = {
                     type: 'object',
                     properties: {
                         token: {type: 'string'},
+                        userInfo: {
+                            type: 'object',
+                            properties: {
+                                login: {type: 'string'},
+                            },
+                        },
                     },
                 },
             },

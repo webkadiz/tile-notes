@@ -19,7 +19,7 @@ module.exports = function (fastify, opts, done) {
 
         const token = fastify.jwt.sign({id: user.id, login: user.login})
 
-        reply.baseResponse({token})
+        reply.baseResponse({token, userInfo: user})
     })
 
     fastify.post('/signin', {schema: signupSchema}, async (request, reply) => {
@@ -27,7 +27,7 @@ module.exports = function (fastify, opts, done) {
 
         const token = fastify.jwt.sign({id: user.id, login: user.login})
 
-        reply.baseResponse({token})
+        reply.baseResponse({token, userInfo: user})
     })
 
     done()

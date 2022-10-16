@@ -42,6 +42,8 @@ export const syncTasks = createAsyncThunk(
                 dispatch(setTasksAction(tasksLocal))
             } else {
                 dispatch(setTasksAction(tasksServer))
+
+                localStorage.setItem('tasks', JSON.stringify(tasksServer))
             }
         } catch (e) {
             dispatch(setTasksAction(tasksLocal))

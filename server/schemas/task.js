@@ -7,6 +7,16 @@ module.exports.taskSchema = {
         content: {type: 'string'},
         createdAt: {type: 'string'},
         updatedAt: {type: 'string'},
+        coauthors: {
+            type: 'array',
+            items: {
+                type: 'object',
+                properties: {
+                    id: {type: 'string'},
+                    login: {type: 'string'},
+                },
+            },
+        },
     },
 }
 

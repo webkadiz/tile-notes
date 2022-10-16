@@ -12,13 +12,11 @@ export default function Sign() {
     const navigate = useNavigate()
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
     const [isSignup, setIsSignup] = useState(true)
     const [error, setError] = useState('')
 
     const changeLogin = (e) => setLogin(e.target.value)
     const changePassword = (e) => setPassword(e.target.value)
-    const changeConfirmPassword = (e) => setConfirmPassword(e.target.value)
 
     const signup = () => {
         dispatch(userSignup({login, password})).then((res) => {

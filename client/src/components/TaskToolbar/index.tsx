@@ -1,4 +1,5 @@
 import cn from 'classnames/bind'
+import CoAuthorIcon from '../../icons/CoAuthorIcon'
 import styles from './index.module.scss'
 
 type Props = {
@@ -9,16 +10,24 @@ type Props = {
 const cx = cn.bind(styles)
 
 export default function TaskToolbar(props: Props) {
+    const {onClose, onCreate} = props
+
     return (
         <div className={cx('toolbar')}>
-            <div></div>
             <div>
-                <button className="btn mr-1" onClick={props.onCreate}>
-                    Создать
-                </button>
-                <button className="btn" onClick={props.onClose}>
-                    Закрыть
-                </button>
+                <CoAuthorIcon />
+            </div>
+            <div>
+                {onCreate && (
+                    <button className="btn mr-1" onClick={onCreate}>
+                        Создать
+                    </button>
+                )}
+                {onClose && (
+                    <button className="btn" onClick={onClose}>
+                        Закрыть
+                    </button>
+                )}
             </div>
         </div>
     )
