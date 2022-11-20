@@ -5,6 +5,7 @@ module.exports.taskSchema = {
         id: {type: 'string'},
         title: {type: 'string'},
         content: {type: 'string'},
+        isDeleted: {type: 'boolean'},
         createdAt: {type: 'string'},
         updatedAt: {type: 'string'},
         coauthors: {
@@ -14,6 +15,7 @@ module.exports.taskSchema = {
                 properties: {
                     id: {type: 'string'},
                     login: {type: 'string'},
+                    scope: {type: 'string'},
                 },
             },
         },

@@ -42,6 +42,7 @@ export default function TaskItem(props: Props) {
     const cardRef = useRef<HTMLDivElement>(null)
     const dispatch = useDispatch<AppDispatch>()
     const [showToolbar, setShowToolbar] = useState(false)
+    const [isToolbarPopupOpen, setIsToolbarPopupOpen] = useState(false)
 
     useEffect(() => {
         if (idx !== 0) return
@@ -137,12 +138,19 @@ export default function TaskItem(props: Props) {
     }
 
     const cardMouseEnter = () => {
-        console.log('enter')
         setShowToolbar(true)
     }
 
     const cardMouseLeave = () => {
         setShowToolbar(false)
+    }
+
+    const toolbarPopupOpen = () => {
+        setIsToolbarPopupOpen(true)
+    }
+
+    const toolbarPopupClose = () => {
+        setIsToolbarPopupOpen(false)
     }
 
     return (
@@ -172,13 +180,24 @@ export default function TaskItem(props: Props) {
                         value={task.content}
                         onChange={changeContent}
                     />
-                    <TaskToolbar onClose={closeModalCard} />
+                    <TaskToolbar
+                        onClose={closeModalCard}
+                        task={task}
+                        taskCardIdx={idx}
+                    />
                 </>
             ) : (
                 <>
                     <TaskTextDisplay text={task.title} titleMode />
                     <TaskTextDisplay text={task.content} contentMode />
-                    {showToolbar && <TaskToolbar />}
+                    {(showToolbar || isToolbarPopupOpen) && (
+                        <TaskToolbar
+                            task={task}
+                            onPopupOpen={toolbarPopupOpen}
+                            onPopupClose={toolbarPopupClose}
+                            taskCardIdx={idx}
+                        />
+                    )}
                 </>
             )}
         </TaskCard>

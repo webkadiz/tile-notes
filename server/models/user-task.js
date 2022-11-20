@@ -3,7 +3,8 @@ const {Model} = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
     class UserTask extends Model {
         static associate(models) {
-            // define association here
+            models.UserTask.belongsTo(models.task)
+            models.UserTask.belongsTo(models.user)
         }
     }
 

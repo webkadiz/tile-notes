@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     class User extends Model {
         static associate(models) {
             models.user.belongsToMany(models.task, {through: models.UserTask})
+            models.user.hasMany(models.UserTask)
         }
     }
 

@@ -1,5 +1,6 @@
 import React, {HTMLAttributes, useRef} from 'react'
 import cn from 'classnames/bind'
+import TaskToolbar from '../TaskToolbar'
 import styles from './index.module.scss'
 
 type Props = {
@@ -43,13 +44,21 @@ export default React.forwardRef(function TaskCard(
     )
 
     const onClickHandler = (e: React.MouseEvent) => {
-        if ((e.target as Element).closest('button') === removeBtnRef.current) return
+        const target = e.target as Element
+
+        if (target.closest('button') === removeBtnRef.current) return
+        if (target.closest(TaskToolbar.toString())) return
 
         onClick(e)
     }
 
     return (
-        <div className={classes} ref={ref} onClick={onClickHandler} {...restProps}>
+        <div
+            className={classes}
+            ref={ref}
+            onClick={onClickHandler}
+            {...restProps}
+        >
             {!isOpen && withRemove && (
                 <button
                     ref={removeBtnRef}

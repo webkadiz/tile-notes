@@ -9,7 +9,7 @@ import {
 import styles from './index.module.scss'
 
 export default function TaskList() {
-    const tasks = useSelector(selectTasks)
+    const tasks = useSelector(selectTasks).filter(task => !task.isDeleted)
     const recalculate = useSelector(selectRecalculate)
     let taskPerRow = 3
     taskPerRow = useMediaQuery({maxWidth: TWO_CARD_PER_ROW_BREAKPOINT})
@@ -19,6 +19,7 @@ export default function TaskList() {
         ? 1
         : taskPerRow
 
+        console.log(tasks)
     return (
         <div className={styles.container}>
             {tasks.map((task, idx) => (

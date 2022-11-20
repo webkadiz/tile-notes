@@ -1,15 +1,18 @@
 import {v4 as uuidv4} from 'uuid'
-import {differenceBy, intersectionBy, property, findIndex} from 'lodash'
+import {differenceBy, intersectionBy, property, findIndex, sortBy} from 'lodash'
 import * as api from '../../api'
 import type {TaskId, Task, TaskContents} from './slice'
+import socketService from '../../services/socket-service'
 
 export const createTaskWithDefaults = (task: TaskContents) => {
     const id = uuidv4()
     const date = new Date().toISOString()
+    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}')
 
     return {
         ...task,
         id,
+        isDeleted: false,
         createdAt: date,
         updatedAt: date,
         isOpen: false,
@@ -17,6 +20,7 @@ export const createTaskWithDefaults = (task: TaskContents) => {
         offsetLeft: 0,
         offsetTop: 0,
         style: {},
+        coauthors: [{login: userInfo.login, scope: 'own'}],
     }
 }
 
@@ -50,26 +54,54 @@ export const localStorageRemoveTask = (taskId: TaskId) => {
     localStorage.setItem('tasks', JSON.stringify(tasksLocalRest))
 }
 
-export const syncCreatedTasks = (tasksLocal: Task[], tasksServer: Task[]) => {
-    const tasks = differenceBy(tasksLocal, tasksServer, property('id'))
+export const syncCreatedTasks = async (tasksLocal: Task[], tasksServer: Task[]) => {
+    const newLocalTasks = sortBy(differenceBy(tasksLocal, tasksServer, property('id')), ['id'])
+    const newServerTasks = sortBy(differenceBy(tasksServer, tasksLocal, property('id')), ['id'])
+    console.log(newLocalTasks, newServerTasks, 'server new')
 
-    for (const task of tasks) {
-        api.createTaskRequest(task)
+    for (const task of newLocalTasks) {
+        if (task.isDeleted) continue
+
+        await api.createTaskRequest(task)
+        socketService.getSocket()?.emit('taskChanging', {taskId: task.id})
     }
+
+    return [...newLocalTasks, ...newServerTasks]
 }
 
-export const syncUpdatedTasks = (tasksLocal: Task[], tasksServer: Task[]) => {
-    const tasks = intersectionBy(tasksLocal, tasksServer, property('id'))
+export const syncUpdatedTasks = async (tasksLocal: Task[], tasksServer: Task[]) => {
+    const tasks = []
+    const tasksLocalForUpdate = sortBy(intersectionBy(
+        tasksLocal,
+        tasksServer,
+        property('id')
+    ), ['id'])
+    const tasksServerForUpdate = sortBy(intersectionBy(
+        tasksServer,
+        tasksLocal,
+        property('id')
+    ), ['id'])
 
-    for (const task of tasks) {
-        api.createTaskRequest(task)
+    console.log(tasksLocalForUpdate, tasksServerForUpdate, 'diff')
+
+    for (let i = 0; i < tasksLocalForUpdate.length; i++) {
+        if (
+            new Date(tasksLocalForUpdate[i].updatedAt) >
+            new Date(tasksServerForUpdate[i].updatedAt)
+        ) {
+            if (tasksLocalForUpdate[i].isDeleted) {
+                await api.removeTaskRequest(tasksLocalForUpdate[i].id)
+            } else {
+                await api.updateTaskRequest(tasksLocalForUpdate[i])
+            }
+
+            socketService.getSocket()?.emit('taskChanging', {taskId: tasksLocalForUpdate[i].id})
+            tasks.push(tasksLocalForUpdate[i])
+        } else {
+            tasks.push(tasksServerForUpdate[i])
+        }
     }
-}
 
-export const syncRemovedTasks = (tasksLocal: Task[], tasksServer: Task[]) => {
-    const tasks = differenceBy(tasksServer, tasksLocal, property('id'))
-
-    for (const task of tasks) {
-        api.createTaskRequest(task)
-    }
+    console.log(tasks, 'for update')
+    return tasks
 }

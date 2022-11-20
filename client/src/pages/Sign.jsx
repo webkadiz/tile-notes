@@ -1,11 +1,14 @@
 import {useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {Navigate, useNavigate} from 'react-router-dom'
 import {useDispatch} from 'react-redux'
 import cn from 'classnames'
 import FormInput from '../components/FormInput'
-import ErrorMsg from '../components/ErrorMsg'
 import styles from './sign.module.scss'
-import {userSignin, userSignup} from '../slices/user'
+import {selectToken, userSignin, userSignup} from '../slices/user'
+import {message} from 'antd'
+import {useSelector} from 'react-redux'
+import { initApp } from '../slices/app'
+import { syncTasks } from '../slices/task'
 
 export default function Sign() {
     const dispatch = useDispatch()
@@ -13,7 +16,7 @@ export default function Sign() {
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
     const [isSignup, setIsSignup] = useState(true)
-    const [error, setError] = useState('')
+    const token = useSelector(selectToken)
 
     const changeLogin = (e) => setLogin(e.target.value)
     const changePassword = (e) => setPassword(e.target.value)
@@ -21,10 +24,12 @@ export default function Sign() {
     const signup = () => {
         dispatch(userSignup({login, password})).then((res) => {
             if (res.error) {
-                setError(res.error.message)
+                message.error(res.error.message)
                 return
             }
 
+            dispatch(syncTasks())
+            message.success('Регистрация прошла успешно')
             navigate('/app')
         })
     }
@@ -32,13 +37,17 @@ export default function Sign() {
     const signin = () => {
         dispatch(userSignin({login, password})).then((res) => {
             if (res.error) {
-                setError(res.error.message)
+                message.error(res.error.message)
                 return
             }
 
+            dispatch(syncTasks())
+            message.success('Вход успешно выполнен')
             navigate('/app')
         })
     }
+
+    if (token) return <Navigate to="/app" />
 
     return (
         <div className={cn(styles.container)}>
@@ -58,8 +67,6 @@ export default function Sign() {
                         Вход
                     </button>
                 </div>
-
-                {error && <ErrorMsg message={error} />}
                 {!isSignup && (
                     <>
                         <FormInput

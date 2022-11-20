@@ -8,9 +8,16 @@ class TaskService {
         const tasks = await user.getTasks()
 
         for (const task of tasks) {
-            const coauthors = await task.getUsers({raw: true})
+            const finalCoauthors = []
+            const coauthors = await task.getUsers({attributes: ['login']})
 
-            task.dataValues.coauthors = coauthors
+            for (const coauthor of coauthors) {
+                const scope = coauthor.UserTask.scope
+                coauthor.dataValues.scope = scope
+                finalCoauthors.push(coauthor)
+            }
+
+            task.dataValues.coauthors = finalCoauthors
         }
 
         return tasks
@@ -19,9 +26,11 @@ class TaskService {
     async create(userId, task) {
         const user = await UserService.get(userId)
 
-        return (await user.createTask(task, {
-            through: {scope: 'own'},
-        })).dataValues
+        return (
+            await user.createTask(task, {
+                through: {scope: 'own'},
+            })
+        ).dataValues
     }
 
     async update(userId, {id, title, content, updatedAt}) {
@@ -32,13 +41,10 @@ class TaskService {
 
         const task = taskArr[0]
 
-        await task.update(
-            {title, content, updatedAt},
-        )
+        await task.update({title, content, updatedAt})
     }
 
     async delete(userId, id) {
-        console.log(userId, id)
         const user = await UserService.get(userId)
         const taskArr = await user.getTasks({where: {id}})
 
@@ -46,7 +52,36 @@ class TaskService {
 
         const task = taskArr[0]
 
-        await task.destroy()
+        await task.update({isDeleted: true, updatedAt: new Date().toISOString()})
+    }
+
+    async addCoauthor({taskId, login}) {
+        const task = await db.task.findByPk(taskId)
+        const user = await db.user.findOne({
+            where: {
+                login,
+            },
+        })
+
+        console.log(task)
+        console.log(user)
+        if (!user) throw new Error('Пользователь не найден')
+
+        const res = await task.addUser(user, {through: {scope: 'editor'}})
+        console.log(res)
+    }
+
+    async removeCoauthor({taskId, login}) {
+        const task = await db.task.findByPk(taskId)
+        const user = await db.user.findOne({
+            where: {
+                login,
+            },
+        })
+
+        if (!user) throw new Error('Пользователь не найден')
+
+        await task.removeUser(user)
     }
 }
 

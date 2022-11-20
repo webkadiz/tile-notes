@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type {TaskId, Task, TaskContents} from './slices/task'
+import type {TaskId, Task, TaskContents, CoauthorPayload} from './slices/task'
 import type {UserCreds, UserInfo, UserState, UserToken} from './slices/user'
 
 type Response<T> = {
@@ -64,6 +64,19 @@ export const signin = (userCreds: UserCreds) => {
 
 export const getUserInfo = () => {
     return axios.get<Response<UserInfo>>('/api/user-info', {
+        headers: genHeaders(),
+    })
+}
+
+export const addCoauthor = (payload: CoauthorPayload) => {
+    return axios.post<Response<UserInfo>>('/api/coauthor', payload, {
+        headers: genHeaders(),
+    })
+}
+
+export const removeCoauthor = (payload: CoauthorPayload) => {
+    return axios.delete<Response<UserInfo>>('/api/coauthor', {
+        data: payload,
         headers: genHeaders(),
     })
 }

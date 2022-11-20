@@ -1,7 +1,8 @@
 import {CSSProperties} from 'react'
 import {createSlice, type PayloadAction} from '@reduxjs/toolkit'
-import {findIndex} from 'lodash'
+import {find, findIndex} from 'lodash'
 import type {RootState} from '../../store'
+import {localStorageUpdateTask} from './utils'
 
 export type TaskId = string
 
@@ -9,13 +10,25 @@ export type Task = {
     id: TaskId
     title: string
     content: string
+    isDeleted: boolean
     createdAt: string
     updatedAt: string
+    coauthors: Coauthor[]
     isOpen: boolean
     height: number
     offsetLeft: number
     offsetTop: number
     style: CSSProperties
+}
+
+export type Coauthor = {
+    login: string
+    scope: string
+}
+
+export type CoauthorPayload = {
+    taskId: TaskId
+    login: Coauthor['login']
 }
 
 export type TaskContents = Pick<Task, 'title' | 'content'>
@@ -51,6 +64,24 @@ export const taskSlice = createSlice({
 
             state.recalculate++
         },
+        addCoauthor(state, {payload}: PayloadAction<CoauthorPayload>) {
+            const task = find(state.tasks, {id: payload.taskId})
+
+            if (!task) return
+
+            task.coauthors.push({login: payload.login, scope: 'editor'})
+            localStorageUpdateTask(task)
+        },
+        removeCoauthor(state, {payload}: PayloadAction<CoauthorPayload>) {
+            const task = find(state.tasks, {id: payload.taskId})
+
+            if (!task) return
+
+            task.coauthors = task.coauthors.filter(
+                (coauthor) => coauthor.login !== payload.login
+            )
+            localStorageUpdateTask(task)
+        },
         recalculateTasks(state) {
             state.recalculate++
         },
@@ -62,6 +93,8 @@ export const {
     createTask: createTaskAction,
     updateTask: updateTaskAction,
     removeTask: removeTaskAction,
+    addCoauthor: addCoauthorAction,
+    removeCoauthor: removeCoauthorAction,
     recalculateTasks: recalculateTasksAction,
 } = taskSlice.actions
 

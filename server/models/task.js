@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     class Task extends Model {
         static associate(models) {
             models.task.belongsToMany(models.user, {through: models.UserTask})
+            models.task.hasMany(models.UserTask)
         }
     }
 
@@ -16,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             title: DataTypes.STRING,
             content: DataTypes.STRING,
+            isDeleted: DataTypes.BOOLEAN,
             createdAt: DataTypes.DATE,
             updatedAt: DataTypes.DATE,
         },
