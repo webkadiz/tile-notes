@@ -12,10 +12,13 @@ export default function SharingTask() {
     useEffect(() => {
         axios(`/api/task/${link}`)
             .then(({data}) => {
-                const task = data.data
-                console.log(task, 'task')
+                const serverTask = data.data
 
-                setTask(task)
+                if (task.title || task.content) return
+
+                console.log(serverTask, 'task')
+
+                setTask(serverTask)
             })
             .catch(console.error)
     }, [])
