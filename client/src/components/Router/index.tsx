@@ -7,6 +7,7 @@ import Sign from '../../pages/Sign'
 import {AppDispatch} from '../../store'
 import {initApp, selectIsInit} from '../../slices/app'
 import AuthCheck from '../AuthCheck'
+import SharingTask from '../SharingTask.tsx'
 
 export default function Router() {
     const isInit = useSelector(selectIsInit)
@@ -28,6 +29,7 @@ export default function Router() {
                     }
                 />
                 <Route path="/sign" element={<Sign />} />
+                <Route path="/task/:link" element={<SharingTask />} />
                 <Route
                     path="/"
                     element={

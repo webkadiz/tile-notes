@@ -10,7 +10,8 @@ module.exports = async function (fastify, opts, done) {
 
     const sessionStore = new ConnectSession({
         conObject: {
-            connectionString: 'postgres://postgres:postgres@localhost:5433/google_keep',
+            connectionString:
+                'postgres://postgres:postgres@localhost:5433/google_keep',
             ssl: process.env.NODE_ENV === 'production',
         },
         tableName: 'admin_session',
@@ -19,7 +20,7 @@ module.exports = async function (fastify, opts, done) {
 
     const DEFAULT_ADMIN = {
         email: 'admin',
-        password: '***',
+        password: '123',
     }
 
     const authenticate = async (email, password) => {

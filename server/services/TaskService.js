@@ -52,7 +52,10 @@ class TaskService {
 
         const task = taskArr[0]
 
-        await task.update({isDeleted: true, updatedAt: new Date().toISOString()})
+        await task.update({
+            isDeleted: true,
+            updatedAt: new Date().toISOString(),
+        })
     }
 
     async addCoauthor({taskId, login}) {
@@ -82,6 +85,23 @@ class TaskService {
         if (!user) throw new Error('Пользователь не найден')
 
         await task.removeUser(user)
+    }
+
+    async addSharingLink({taskId, link}) {
+        await db.sharing.create({
+            taskId,
+            link,
+        })
+    }
+
+    async getSharingTask(link) {
+        const {taskId} = await db.sharing.findOne({
+            where: {link},
+        })
+
+        const task = await db.task.findByPk(taskId)
+
+        return task.dataValues
     }
 }
 

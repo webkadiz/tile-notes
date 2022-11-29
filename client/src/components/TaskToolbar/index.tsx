@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import CoAuthorPopup from '../CoAuthorPopup'
 import CoAuthorIcon from '../../icons/CoAuthorIcon'
 import {type Task} from '../../slices/task'
+import SharingIcon from '../../icons/SharingIcon'
+import SharingPopup from '../SharingPopup'
 
 type Props = {
     onCreate?: (e: React.MouseEvent) => void
@@ -16,6 +18,7 @@ type Props = {
 const TaskToolbar = (props: Props) => {
     const toolbarRef = useRef<HTMLDivElement>(null)
     const [isCoauthorPopupOpen, setIsCoauthorPopupOpen] = useState(false)
+    const [isSharingPopupOpen, setIsSharingPopupOpen] = useState(false)
     const {
         onClose,
         onCreate,
@@ -33,9 +36,20 @@ const TaskToolbar = (props: Props) => {
     }
 
     const coauthorPopupClose = () => {
-        console.log('close')
         onPopupClose()
         setIsCoauthorPopupOpen(false)
+    }
+
+    const sharingPopupOpen = (e: React.MouseEvent) => {
+        e.stopPropagation()
+
+        onPopupOpen(e)
+        setIsSharingPopupOpen(true)
+    }
+
+    const sharingPopupClose = () => {
+        onPopupClose()
+        setIsSharingPopupOpen(false)
     }
 
     return (
@@ -49,9 +63,23 @@ const TaskToolbar = (props: Props) => {
                     element={toolbarRef}
                 />
             )}
-            <div>
-                <CoAuthorIcon onClick={coauthorPopupOpen} />
-            </div>
+            {task && (
+                <SharingPopup
+                    isOpen={isSharingPopupOpen}
+                    onClose={sharingPopupClose}
+                    taskCardIdx={taskCardIdx}
+                    task={task}
+                    element={toolbarRef}
+                />
+            )}
+            <IconContainer>
+                <div>
+                    <CoAuthorIcon onClick={coauthorPopupOpen} />
+                </div>
+                <div>
+                    <SharingIcon onClick={sharingPopupOpen} />
+                </div>
+            </IconContainer>
             <div>
                 {onCreate && (
                     <button className="btn mr-1" onClick={onCreate}>
@@ -67,6 +95,10 @@ const TaskToolbar = (props: Props) => {
         </div>
     )
 }
+
+const IconContainer = styled.div`
+    display: flex;
+`
 
 const STaskToolbar = styled(TaskToolbar)`
     position: relative;

@@ -80,3 +80,9 @@ export const removeCoauthor = (payload: CoauthorPayload) => {
         headers: genHeaders(),
     })
 }
+
+export const addSharingLink = (payload: {taskId: TaskId; link: string}) => {
+    return axios.post<Response<undefined>>('/api/task/sharing', payload, {
+        headers: genHeaders(),
+    })
+}

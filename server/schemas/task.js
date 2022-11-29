@@ -123,3 +123,33 @@ module.exports.deleteTaskSchema = {
     },
     $ref: 'baseResponse#',
 }
+
+module.exports.postAddSharingLink = {
+    headers: {
+        type: 'object',
+        properties: {
+            authorization: {type: 'string'},
+        },
+        required: ['authorization'],
+    },
+    body: {
+        type: 'object',
+        properties: {
+            taskId: {$ref: 'task#/properties/id'},
+            link: {type: 'string'},
+        },
+        required: ['taskId', 'link'],
+        additionalProperties: false,
+    },
+    response: {
+        200: {
+            type: 'object',
+            properties: {
+                error: {$ref: 'baseResponse#/response/200/properties/error'},
+                message: {
+                    $ref: 'baseResponse#/response/200/properties/message',
+                },
+            },
+        },
+    },
+}
